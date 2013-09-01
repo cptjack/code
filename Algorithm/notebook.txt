@@ -1,0 +1,1910 @@
+                                                                     
+                                                                     
+                                                                     
+                                             
+
+number of spanning trees of complete graph with n nodes is n^(n-2);
+
+
+cstdio, iostream, algorithm, set, map, stack, list, queue, deque, cctype, string, vector, sstream, iterator, numeric, cmath, cstring, complex, cstdlib, climits, 
+
+using namespace std;
+
+#define REP(i,n) for (int i=0; i<(int)(n); ++i)
+#define REPS(p,s) for (char * p = s; *p ; p++)
+#define FOR(var,start,end) for (int var=(start); var<(int)(end); ++var)
+#define RFOR(var,start,end) for (int var=(start); var>=(int)(end); --var) 
+
+#define PB push_back  #define PF push_front  #define BP pop_back  #define FP pop_front
+#define BN begin()  #define RN rbegin()  #define RD rend()  #define ED end()
+#define MP(a,b) make_pair(a,b)  #define ST first  #define ND second  
+
+#define IT(X) __typeof((X).BN)  #define RIT(X) __typeof((X).RN)  #define REF(X) __typeof(__typeof(X)::reference) 
+
+#define FORIT(it, X) for(IT(X) it = (X).BN; it != (X).ED; ++it)  #define FORITR(it, X) for(RIT(X) it = (X).RN; it != (X).RD; ++it) 
+#define VV(X) vector < vector< X > >  #define PIB(X)  pair<IT(X),bool >  #define SQ(x) ((x)*(x)) #define EL() cout<<endl
+
+typedef long long LL;  typedef unsigned long long ULL;  typedef istringstream ISS;  typedef vector<int> VI;  typedef pair<int,int> PII;  typedef vector< PII > VPII;
+
+void IO(int l, ...)	// usage ... IO(3,a1,b1,c1) ... prints value of a1____b1____c1
+{
+	va_list val;
+	va_start(val,l);
+	int i;
+	FOR(i,0,l)
+	{
+		cout<<va_arg(val,int)<<"  ";
+	}
+}
+
+void SO(int l, ...)  /// usage SO(2,"hello","world")
+{
+	va_list val;
+	va_start(val,l);
+	int i;
+	FOR(i,0,l)
+	{
+		cout<<va_arg(val,char*)<<"  ";
+	}
+}
+
+void AIO(int n,int a[])	// usage AIO(sizeofarray,arrayname) for ints only
+{
+	REP(i,n)
+		cout<<a[i]<<"  ";
+	EL();
+}
+
+void ASO(int n,string a[]) // usage  usage ASO(sizeofarray,arrayname) for strings only
+{
+	REP(i,n)
+		cout<<a[i]<<"  ";
+	EL();
+}
+
+void GIO(char *f, ...) // generic IO ... desi printf ... usage .. GIO("dsd",a,"Hello",b)
+{
+	va_list val;
+	va_start(val,f);
+	while(*f!='\0')
+	{
+		if(*f=='d')    //here we can add more options as we need like for double, or user defined structs
+			cout<<va_arg(val,int)<<"  ";
+		else if(*f=='s')
+			cout<<va_arg(val,char*)<<"  ";
+		f++;
+	}
+}
+
+//debugging IO functions end
+
+int getln(char buff[],char * str)
+{ // returns 0 for blank line
+	int k=0; buff[0]='\0';
+	if( scanf("%[^\n]%n%*c",buff,&k) == EOF) return -1;
+	if(str)	return (!strcmp(buff,str)) ? -2 : k;
+	return k;
+}
+
+for(int k=0,knt=0;knt<strlen(buff)&&sscanf(buff+knt,"%n",&k)!=EOF && k !=0 ; knt+=k,k=0) 
+
+import java.io.*;
+import java.lang.*;
+import java.math.*;
+import java.util.*;
+
+public class Main {
+    static BufferedReader stdin =  
+        new BufferedReader(new InputStreamReader(System.in)); 
+    static BufferedWriter stdout = 
+	new BufferedWriter( new OutputStreamWriter(System.out)) ;
+
+    static StringTokenizer  lex  = null;
+    public static void main(String[] args) 	throws IOException	{ 
+    }
+}
+
+-- todo add funcs---
+
+----------------------------------------------------------------------------------
+/*------- fibonacci fib(1476)=1.30699e+308  last fib double can hold--- */
+int fib(int n) { 
+  int a=1,b=1,c; 
+  FOR(i,3,n) { 
+    c = a+b; 
+    a = b; 
+    b = c; 
+  } 
+  return b;  
+}
+
+/*------ Euclid GCD --- */
+struct Triple	{
+    int d, x, y;
+    Triple( int d, int x, int y ) : d( d ), x( x ), y( y ) {}
+};
+
+Triple egcd( int a, int b )		{
+	if( b==0 ) return Triple( a,  1,  0 );
+    Triple q = egcd( b, a % b );
+    return Triple( q.d, q.y, q.x - a / b * q.y );
+}
+
+/* LINEAR MOD EQN  ax = b (mod n), x < n ------------- */
+VI msolve( int a, int b, int n )	{
+    if( n < 0 ) n = -n;
+    Triple t = egcd( a, n );
+    VI r;
+    if( b % t.d ) return r;
+    int x = ( b / t.d * t.x ) % n;
+    if( x <  0  ) x += n;
+    REP(i,t.d)
+        r.PB( ( x + i * n / t.d ) % n );
+    return r;
+}
+
+/* Linear Diophantine Equation Solver
+ * Solves integer equations of the form ax + by = c 
+ *          x = t.x + k * b / t.d,
+ *          y = t.y - k * a / t.d;  */
+Triple ldioph( int a, int b, int c )	{
+    Triple t = egcd( a, b );
+    if( c % t.d ) return Triple( 0, 0, 0 );
+    t.x *= c / t.d; t.y *= c / t.d;
+    return t;
+}
+
+/* Modular Inverse
+ * Given a and n, solves ax = 1 (mod n).
+ * Returns 0 if there is no solution.*/
+int modinv( int a, int n )
+{
+    Triple t = egcd( a, n );
+    if( t.d >  1 ) return  0;
+    int r = t.x % n;
+    return( r <  0 ? r + n : r );
+}
+
+/* b^p mod m. Wants b >= 0, p >= 0, m >= 1.  */
+LL bigmod( LL b, int p, int m )	{
+    LL r = 1;
+    for( int i = ( 1 << 30 ); i; i >>= 1 )  //i=( 1LL << 62) for LL p
+    {   r *= r; r %= m;
+        if( p & i ) { r *= b; r %= m; }
+    }
+    return r;
+}
+
+/* Sieve of Erastosthenes  */
+const int N=1000;
+VI primes;
+bool isPrime[N];
+void sieve()	{
+    fill(&isPrime[0], &isPrime[N], true);
+    isPrime[0] = isPrime[1] = false;
+    primes.clear();
+    for (int i = 2; i < N; i++) {
+		if (isPrime[i]) {
+	    	primes.PB(i);
+		    //against int overflow of i * i
+		    if (i > N / i)	continue;
+	    	for (int j = i * i; j < N; j += i) 
+				isPrime[j] = false;	    
+		}
+    }
+}
+
+/* ISPRIME   */
+int suspect(LL b, int t, LL u, LL n)
+{
+    LL prod = 1;
+    for(;u;u /= 2) {
+		if (u & 1)   prod = ((prod * b) % n);
+		b = ((b * b) % n);
+    }
+    if (prod == 1)	return 1;
+    for (int i = 1; i <= t; i++) {
+		if (prod == n - 1)
+		    return 1;
+		prod = (prod * prod) % n;
+    }
+    return 0;
+}
+
+int isprime_fast(int n)
+{
+    LL k = n - 1;
+    int t = 0;
+    if(n<2) return 0;
+    if(n==2||n==7||n==61) return 1;
+    while (!(k % 2)) { t++;	k /= 2;    }
+    if (n > 2 && n % 2 == 0)		return 0;
+    if (n > 3 && n % 3 == 0)		return 0;
+    if (n > 5 && n % 5 == 0)		return 0;
+    if (n > 7 && n % 7 == 0)		return 0;
+    if (suspect(61, t, k, n) && suspect(7, t, k, n) && suspect(2, t, k, n))
+		return 1;
+    return 0;
+}
+
+bool isprime(int n)
+{
+    if (n < 2) 	return false;
+    int sq = int (sqrt((double)n));
+    FOR(i,2, sq)
+		if (!(n % i))	return false;
+    return true;
+}
+
+/* PRIME FACTOR  */
+void factors( int n,VI &v )		{
+	FOR(i,2, sqrt((double)n)+1 )	{
+		int ile = 0;
+		while (n % i == 0)	n /= i, ile++;
+		if (ile)	v.PB(i);  // i , ile    
+	}
+	 if (n>1) v.PB(n); // n , 1
+}
+
+/* Euler totient function  */
+int phi( int n )	{
+    VI p;
+    factors( n, p );
+    REP(i,p.size())    {
+        if( i && p[i] == p[i - 1] ) continue;
+        n /= p[i];
+        n *= p[i] - 1;
+    }
+    return n;
+}
+
+/** Number of divisors  */
+int divisors( int n )	{
+    VI f;
+    factors( n, f );
+    int k = f.size();
+    VI table( k + 1,  0 );
+    table[k] = 1;
+
+    FORD(i,k - 1,0)    {
+        table[i] = table[i + 1];
+        for( int j = i + 1; ; j++ )
+            if( j == k || f[j] != f[i] )
+                { table[i] += table[j]; break; }
+    }
+    return table[0];
+}
+
+/* continued fraction of the rationalnumber m/n.  */
+void contFract( int m, int n, VI &ans )		{
+    while( n )	    {
+        ans.PB( m / n );
+        m %= n;
+        m ^= n ^= m ^= n;
+    }
+}
+
+/*---------- nCr   */
+long nCr(int n,int m)	{
+	long bc[100][100]; // size ???
+	REP(i,n+1) bc[i][0] = bc[i][i] = 1;
+	FOR(i,1,n)
+		FOR(j,1,i-1)
+			bc[i][j] = bc[i-1][j-1] + bc[i-1][j];
+
+	return( bc[n][m] );
+}
+
+/* Big Factorial  */
+digits[0] = 1;
+n_digits = 1;
+
+for (i = 2; i <= n; i++) {
+    overflow = 0;
+    for (j = 0; j < n_digits || overflow; j++) {
+		if (j < n_digits) {
+		    digits[j] = digits[j] * i + overflow;
+		} else {
+		    digits[j] = overflow;
+		}
+		overflow = digits[j] / 10;
+		digits[j] = digits[j] % 10;
+	}
+    n_digits = j;
+}
+-----------------------------------------------------------------------------------------
+/*------LIS pa[]-parent, m[]- length */
+int  lis()	{
+	FORD(i,n-1,0)	{
+		m[i]=1; pa[i]=-1;
+		FOR(j,i+1,n-1)	
+			if(a[j] > a[i] && m[i] < m[j]+1)	{
+				m[i]=m[j]+1;
+				pa[i]=j;
+			}
+		
+	}
+	return max_element(m,m+n)-m;
+}
+l = lis();
+length === m[l];
+while(l!=-1)	{ 
+	 printf("%d ",a[l]);
+	 l=pa[l];
+}
+
+int lis_fast(set<int> & st)	{
+	st.clear();
+	IT(st) it;
+	REP(i,n)	{
+		st.insert(a[i]);
+		it = st.find(a[i]);
+		it++;
+		if(it != st.ED)
+			st.erase(it);		
+	}	
+	return st.size();
+}
+
+/*----LCS pa[][]-parent, m[][]- length  */
+int lcs()	{
+	FORD(i,M,0)	FORD(j,N,0)	{
+		if(i==M || j==N) { m[i][j]=0; continue; }		
+		if(s1[i] == s2[j])	{
+			m[i][j] = m[i+1][j+1]+1;
+			pa[i][j] = 2;
+		}
+		else if(m[i+1][j] <= m[i][j+1])	{
+			m[i][j] = m[i][j+1];
+			pa[i][j] = 1;
+		}
+		else  if(m[i+1][j] >  m[i][j+1])	{
+			m[i][j] = m[i+1][j];
+			pa[i][j] = 3;
+		}			
+	}	
+	return m[0][0];
+}
+
+int i=0,j=0;
+while(i != M && j!= N)	{
+	if(pa[i][j] == 2) {
+		cout << s1[i];
+		i++; j++;
+	}
+	else if(pa[i][j] == 1)	{
+		j++;
+	}
+	else if(pa[i][j] == 3)
+		i++;
+}
+
+/* Edit distance*/
+typedef struct {   int cost;  int parent; } cell;
+cell m[MAXLEN+1][MAXLEN+1];
+s[0] = t[0] = ' '; scanf("%s",&(s[1])); scanf("%s",&(t[1]));
+int string_compare(char *s, char *t)
+{
+	int i,j,k;
+    int opt[3];
+	for (i=0; i<MAXLEN; i++) {
+		m[0][i].cost = m[i][0].cost = i;
+		if (i>0) {	m[0][i].parent = INSERT; m[i][0].parent = DELETE;}
+		else	     m[0][i].parent = m[i][0].parent -1;
+  	}
+
+	for (i=1; i<strlen(s); i++)
+    	for (j=1; j<strlen(t); j++) {
+       		opt[MATCH] = m[i-1][j-1].cost 
+        		+ match(s[i],t[j]); //match = s[i] == t[i] ? 0 : 1;
+        	opt[INSERT] = m[i][j-1].cost + indel(t[j]);	// indel == 1
+            opt[DELETE] = m[i-1][j].cost + indel(s[i]);
+            m[i][j].cost = opt[MATCH];
+            m[i][j].parent = MATCH;
+            for (k=INSERT; k<=DELETE; k++)
+         	   if (opt[k] < m[i][j].cost) {
+            	   m[i][j].cost = opt[k];
+                   m[i][j].parent = k;
+	           }
+  	}
+	i = strlen(s) - 1; j = strlen(t);
+	return( m[i][j].cost );
+}
+reconstruct_path(char *s, char *t, int i, int j)
+{
+	if (m[i][j].parent == -1) return;
+	if (m[i][j].parent == MATCH) {
+		reconstruct_path(s,t,i-1,j-1);
+		match_out(s, t, i, j); //  s[i]==t[j]? 'M' : 'S'
+        return;
+    }
+	if (m[i][j].parent == INSERT) {
+		reconstruct_path(s,t,i,j-1);
+		insert_out(t,j); // 'I'
+		return;
+	}
+	if (m[i][j].parent == DELETE) {
+		reconstruct_path(s,t,i-1,j);
+		delete_out(s,i); //'D'
+		return;
+	}
+}
+
+/*  Knapsack  */
+{
+for (i=0;i<=N ;i++) C[i][0] = 0;
+for (w=0;w<=MW;w++) C[0][w] = 0;
+for (i=1;i<=N;i++)
+  for (w=1;w<=MW;w++) {
+    if (Wi[i] > w)
+      C[i][w] = C[i-1][w];
+    else
+      C[i][w] = max(C[i-1][w] , C[i-1][w-Wi[i]]+Vi[i]);
+  }
+return (C[N][MW]);
+}
+
+-----------------------------------------------------------------------------
+/* ------------Dijkstra O(ElogV) ------------------- */
+int dijkstra(int s,int t=-1) // mlogn  algorithm
+{
+    REP(i,n)	{
+		dt[i]=-1; pa[i]=-1; vis[i]=0;
+    }
+    MMAP(int, int) up;
+    up.insert(MP(0, s));
+    vis[s]=1;
+    while (!up.empty()) {
+    	IT(up) it = up.BN;
+		int d = it->ST;	// distance
+		int u = it->ND;	// vertex
+		up.erase(it);
+		if (u == t) { return d; }
+		For each v in adj(u)  {
+			if (vis[v]) continue;
+			int tmp = d + wt(u,v);
+			if(dt[v] < 0 || dt[v] > tmp)	{
+				dt[v] = tmp;
+				pa[v] = u;
+	    		up.insert(MP(dt[v], v));
+			}
+	    }
+	}
+
+    return -1;
+}
+
+/* --------BFS O(V+E)--------------- */
+
+void bfs(int s,int t=-1)	{
+	char vis[..];
+	REP(i,n)	{ vis[i] = 0; dt[i] = INF;	pa[i] = -1;	}
+	vis[s]=1;	dt[s]=0;
+	queue<int> q;
+	q.push(s);
+	while(! q.empty())	{
+		int u = q.front();
+		q.pop();
+		if(u == t)	{ /* output */	}
+		For each v adj(u)	{
+			if(vis[v] == 1) {/* cycle */}
+			if(  vis[v] == 0 )	{
+				vis[v] = 1;
+				dt[v] = dt[u] + 1;
+				pa[v] = u;
+				q.push(v);
+			}			
+		}
+		vis[u] = 2;
+	}
+}
+
+/*--------DFS O(V+E) & topological sort & strongly connected ----- */
+char vis[..];
+int rep,cpt;
+
+void dfs_vis(int u)	{
+	vis[u] = 1; //	dtim[u] = ++time;
+	comp[u] = rep;
+	
+	For each v in adj(u)	{
+		if(! vis[v])	{
+			pa[v] = u;
+			dfs_vis(v);
+		}
+		else if(vis[v] == 1)
+			isloop = true;
+	}
+	vis[u] = 2; //	ftim[u] = ++time;
+	order.PB(u);
+}
+
+void dfs()	{
+	REP(i,n) { vis[i]=0; pa[i]=-1; comp[i]=-1; }
+	cpt=0; isloop = false;
+	REP(i,n) if(! vis[i])	{
+		cpt++; rep=i;	
+		dfs_vis(i);
+	}
+
+	if(isloop)  {cycle,  topological sort }
+}
+
+vois scc()	{
+	dfs();
+	REP(i,n) vis[i] = 0;	
+	FORITR(it,order) if(!vis[*it])	{
+			rep=*it;
+			dfs_vis(rep);
+	}	
+}
+
+/* Articulation pt and bridges  */
+int c[..],ci; 
+int lowpt[..];
+VI e[..];
+char t[..][..]; 
+
+void dfs(int s)	{
+	REP(i,e[s].size())	{
+		int v = e[s][i];
+		if(t[s][v] != 1) continue;		
+		if(c[v] < 0)	{		
+			lowpt[v] = c[v] = ++ci;
+			t[s][v] = 2;
+			t[v][s] = 3;
+			dfs(v);
+			lowpt[s] = min(lowpt[s], lowpt[v]);
+		}
+		else	{
+			lowpt[s] = min(lowpt[s], c[v]);
+			t[s][v] = 3;
+			t[v][s] = 3;
+		}		
+	}			
+}
+
+int main()	{
+	REP(i,n)	{	e[i].clear();	c[i]=-1;	}
+	memset(t, 0, sizeof(t));
+	ci = 0;
+	lowpt[0] = 0;
+	c[0] = 0; 
+	dfs(0);	
+	a = 0;
+	FOR(i, 1, n-1)	{   // i = 0 for bridges , 1  for arti pt
+		REP(i,n)
+		if(t[i][j] == 2 && c[i] <= lowpt[j]) // < for bridges, <= for articulation pt
+		{
+			printf("%d\n",i+1); // print arti pts or bridges
+			a++;
+			break;  // no break for bridges
+		}
+	}
+		
+	j = 0;
+	FOR(i, 1, n-1) 
+		j += (t[0][i] == 2)? 1 : 0;
+	a += (j >= 2) ? 1 : 0;
+	if(j>=2) printf("%d\n",1); // root if arti pt
+		printf("a=%d\n", a); // total no. of arti pts
+
+	return 0;
+}
+
+/* struct Group  	*/
+struct Group {
+  int pa[..], rk[..], tcnt[..];
+  Group(int n) {
+    REP(i,n) {  pa[i] = i; rk[i] = 0; tcnt[i]=1;   }
+  }
+
+  void link(int a, int b) {
+    int x = find(a), y = find(b);
+    if(x == y) return;
+    if(rk[y] > rk[x]) swap(x,y);
+    if(rk[x] == rk[y]) rk[x]++;
+    pa[y] = x;
+    tcnt[x] += tcnt[y];    
+  }
+
+  int find(int a) {
+    if(a != pa[a])
+      return pa[a] = find(pa[a]);
+    return pa[a];
+  }
+};
+
+/* Kruskal   */
+{	multiset<Edge> es; // empty at end if graph is a tree i.e. only one MST
+	int wt = 0;
+	Group g(n);
+  	FORIT(it, es) 	{
+    	Edge e = *it;    
+	    if(g.find(e.u) == g.find(e.v))
+			continue;
+		es.erase(it);	
+	    g.link(e.u, e.v);
+	    wt += e.w;
+	}
+
+	int c=0;
+	REP(i,n) if(g.pa[i] == i) c++;
+	if(c != 1) return -1; // no spanning tree
+
+	return wt; // weight of spanning tree
+}
+
+/* Prim*/
+int Prim() {
+  int weight = 0;
+  bool vis[SIZE];
+  memset(vis, 0, sizeof(vis));
+  multimap<int, int> up;
+  up.insert(MP(0, s));
+  pa[s] = -1;
+  while(!up.empty()) {
+    int w = up.BN()->ST;
+    int p = up.BN()->ND;
+    up.erase(up.BN());    
+    vis[p] = true;
+    weight += w;
+    For v adj to p	{
+	if(vis[v]) continue;
+	pa[v] = p;
+	up.insert(MP(graph[p][v], v));
+    }
+  }
+  return weight;
+}
+
+/* Euler tour*/
+bool visited[E_MAX];
+// edge list, (priority, adj_vertex) pair
+VPII node[V_MAX];
+void EulerPath(int start, VI& route) {
+  for(int i = 0; i < (int)node[start].size(); ++i) {
+    PII p = node[start][i];
+    if(!visited[p.ST]) {
+      visited[p.ST] = true;
+      EulerPath(p.ND, route);
+      route.PB(p.ST);
+    }
+  }
+}
+
+/* --------------- my euler tour  ----------- */
+
+/* Bipartite Matching*/
+bool Add(int t) {
+  for(int i = 0; i < m; ++i) {
+    if(!edge[t][i] || visited[i]) continue;
+    visited[i] = true;
+    if(from[i] < 0 || Add(from[i])) {
+      from[i] = t;
+      return true;
+    }
+  }
+  return false;
+}
+
+/* Bipartite Matching*/
+
+
+bool Add(int t) {
+  for(int i = 0; i < m; ++i) {
+    if(!edge[t][i] || visited[i]) continue;
+    visited[i] = true;
+    if(from[i] < 0 || Add(from[i])) {
+      from[i] = t;
+      return true;
+    }
+  }
+  return false;
+}
+
+int Matching() {
+  fill_n(from, m, -1);
+  int cnt = 0;
+  for(int i = 0; i < n; ++i) {
+    fill_n(visited, m, 0);
+    if(Add(i))
+      ++cnt;
+  }
+  return cnt;
+}
+
+/* Max Matching */
+const double epsilon = 1e-12;
+
+int n;
+double cost[128][128];
+int key[128];
+
+void Set(int k) {
+  multimap<double, int, greater<double> > up;
+  int linkl[128];
+  int linkr[128];
+  double cur[128];
+  memset(linkr, -1, sizeof(linkr));
+  for(int i = 0; i < n; ++i) {
+    linkl[key[i]] = i;
+    cur[i] = -1000000.0;
+  }
+  up.insert(MP(0.0, k));
+  while(!up.empty()) {
+    double c = up.BN()->ST;
+    int p = up.BN()->ND;
+    up.erase(up.BN());
+    for(int i = 0; i < n; ++i)
+      if(cur[i] + epsilon < c + cost[p][i]) {
+	cur[i] = c + cost[p][i];
+	if(key[i] >= 0)
+	  up.insert(MP(cur[i] - cost[key[i]][i], key[i]));
+	linkr[i] = p;
+      }
+  }
+  double max_c = -1000000.0;
+  int end;
+  for(int i = 0; i < n; ++i)
+    if(key[i] < 0 && cur[i] > max_c) {
+      max_c = cur[i];
+      end = i;
+    }
+  while(true) {
+    key[end] = linkr[end];
+    if(linkr[end] == k)
+      break;
+    end = linkl[linkr[end]];
+  }
+}
+
+void Search() {
+  memset(key, -1, sizeof(key));
+  for(int i = 0; i < n; ++i)
+    Set(i);
+}
+
+/* Max flow*/
+int n;
+int graph[SIZE][SIZE];
+int flow[SIZE][SIZE];
+
+int MakeRoute(int s, int t) {
+  int prev[SIZE];
+  memset(prev, -1, sizeof(prev));
+  multimap<int, PII , greater<int> > up;
+  up.insert(MP(100000000, MP(s, -2)));
+  while(!up.empty()) {
+    int c = up.BN()->ST;
+    int p = up.BN()->ND.ST;
+    int from = up.BN()->ND.ND;
+    up.erase(up.BN());
+    if(prev[p] != -1)
+      continue;
+    prev[p] = from;
+    if(p == t) {
+      int pa=prev[p];
+      while(pa >= 0) {
+		flow[pa][p] += c;
+		flow[p][pa] -= c;
+		p = pa; pa = prev[p];
+      }
+      return c;
+    }
+    for(int i = 0; i < n; ++i) {
+      int nc = graph[p][i] - flow[p][i];
+      if(nc > 0)
+	up.insert(MP(min(c, nc), MP(i, p)));
+    }
+  }
+  return 0;
+}
+
+int MaxFlow(int s, int t) {
+  int mount = 0;
+  int f;
+  memset(flow, 0, sizeof(flow));
+  while((f = MakeRoute(s, t)) > 0) {
+    mount += f;
+  }
+  return mount;
+}
+
+/* min cost flow -- successive shortest path with bellman-ford */
+LL f[210][210], c[210][210];
+int N,M;
+int ex[50010],ey[50010];
+LL w[50010];
+LL dist[210], aug[210];
+int pa[210];
+LL  infty=(1LL << 60 );
+
+void init(int a)	{
+    N=a; M=0;
+    int i,j;
+    for(i=0;i<N;i++)
+    for(j=0;j<N;j++)
+        f[i][j]=c[i][j]=0;
+}
+
+LL bellmanFord()	{
+    //is it possible neg cycle? No.. pf- shortest paths
+    int i,j,k,fg;
+    LL ww;
+    for(i=0;i<N;i++) dist[i]=aug[i]=infty;
+    dist[0]=0;
+    do
+    {
+        fg=0;
+        for(k=0;k<M;k++)
+        {
+            i=ex[k]; j=ey[k];
+            if(f[i][j] < c[i][j])
+            {
+                if(f[i][j]<0) ww = -w[k]; else ww = w[k];
+                if(dist[j]>dist[i]+ww)
+                {
+                    dist[j] = dist[i]+ww;
+					aug[j]=min(aug[i], c[i][j]-f[i][j]);
+                    pa[j]=i;
+                    fg=1;
+                }
+            }
+        }
+    }	while(fg);
+    if(dist[N-1]>=infty/2) return(0);
+    int wk=N-1,wk1;
+    while(wk)    {
+        wk1=pa[wk];
+        f[wk1][wk]+=aug[N-1];
+        f[wk][wk1]-=aug[N-1];
+        wk=wk1;
+    }
+    return(dist[N-1]*aug[N-1]);
+}
+
+LL minCostFlow()	{
+    LL ret=0;
+    LL tt;
+    while(1)    {
+        tt=bellmanFord();
+        if(tt==0) break;
+        ret+=tt;
+    }
+    return(ret);
+}
+
+void addEdge(int x, int y, int capa, int cost)
+{
+     c[x][y]+=capa;
+     ex[M]=x; ey[M]=y; w[M]=cost;
+     M++;
+}
+char Map[40][40];
+int main()
+{
+    int n,m,i,j,x,y,t,t1,t2,cst;
+    while(cin>>n>>m)
+    {
+        for(i=0; i<n; i++) cin>>Map[i];
+        t = 0;
+        for(i=0; i<n; i++)
+            for(j=0; j<m; j++)
+                if(Map[i][j] == ’H’) t++;
+        init(2*t+2);
+        t1 = 0;
+        for(i=0; i<n; i++)
+            for(j=0; j<m; j++)
+                if(Map[i][j] == ’H’)
+                {
+                    t1++; t2 = t;
+                    for(x=0; x<n; x++)
+                        for(y=0; y<m; y++)
+                            if(Map[x][y] == ’m’)
+                            {
+                                t2++;
+                                cst = abs(i - x) + abs(j - y);
+                                addEdge(t1,t2,1,cst);
+                                addEdge(t2,t1,1,cst);
+                            }
+                }
+        for(i=1; i<=t; i++)
+        {
+            addEdge(0,i,1,0);
+            addEdge(i,0,1,0);
+        }
+        for(i=t+1; i<=2*t; i++)
+        {
+            addEdge(2*t+1,i,1,0);
+            addEdge(i,2*t+1,1,0);
+        }
+        cout<<minCostFlow()<<endl;
+    }
+    return(0);
+}
+
+/* Min cut */
+int n;
+int cost[1024][1024];
+int order[1024];
+int group[1024];
+set<int> active;
+
+void PrintGroup(int* g) {
+  for(int i = 0; i < n; ++i)
+    if(g[i])
+      cout << i;
+  cout << "-";
+  for(int i = 0; i < n; ++i)
+    if(!g[i])
+      cout << i;
+}
+
+inline int newCost(int a, int b) {
+  if(a < 0)
+    return b;
+  if(b < 0)
+    return a;
+  return a + b;
+}
+
+int MakeOrder() {
+  multimap<int, int> cur;
+  FORIT(i,active)
+    cur.insert(MP(0, *i));
+  for(int index = 0; ; ++index) {
+    RIT(cur) iter = cur.RN;
+    int p = order[index] = iter->ND;
+    if(cur.size() <= 1)
+      break;
+    multimap<int, int> next;
+    for(iter++; iter != cur.RD; ++iter) {
+      int q = iter->ND;
+      next.insert(MP(newCost(iter->ST, cost[p][q]), q));
+    }
+    swap(cur, next);
+  }
+  return cur.BN()->ST;
+}
+
+void Marge(int i, int j) {
+  for(int k = 0; k < n; ++k) {
+    if(group[k] == j)
+      group[k] = i;
+    if(k != i && k != j) {
+      cost[i][k] = newCost(cost[i][k], cost[j][k]);
+      cost[k][i] = newCost(cost[k][i], cost[k][j]);
+    }
+  }
+  active.erase(j);
+}
+
+int Solve() {
+  for(int i = 0; i < n; ++i) {
+    active.insert(i);
+    group[i] = i;
+  }
+  int ans = 100000000;
+  int a_g[1024];
+  for(int i = 0; i < n-1; ++i) {
+    int cut = MakeOrder();
+    if(ans > cut) {
+      ans = cut;
+      for(int j = 0; j < n; ++j)
+	a_g[j] = (group[j] == order[n-i-1]);
+    }
+    Marge(order[n-i-1], order[n-i-2]);
+  }
+  memcpy(group, a_g, sizeof(a_g));
+  return ans;
+}
+
+int main() {
+  while(cin >> n && n) {
+    for(int i = 0; i < n; ++i)
+      for(int j = i+1; j < n; ++j) {
+	int v;
+	cin >> v;
+	cost[i][j] = cost[j][i] = v;
+      }
+    int cut = Solve();
+    cout << cut << " "; PrintGroup(group); cout << endl;
+  }
+
+-------------------------- dijkstra, dijkstra , k shortest path (soln of dijkstra, dijkstra (where k = 2)) -----------------------------
+
+#define MAXN 102
+#define INF 999999999
+
+int Cost[MAXN];
+int P[MAXN], N, E;
+int V[MAXN][MAXN];
+
+struct ss {
+	int u, v;
+};
+ss edge[10000];
+
+void Ini() {
+	int i;
+	for(i = 1; i<= N; i++) {
+		Cost[i] = INF;
+	}
+	P[0] = -1;
+	Cost[1] = 0;
+}
+
+void BellMan() {	//used for finding shortest path
+	int n, m = N, u, v;
+	while(m--) {
+		for(int i = 0; i<E; i++) {
+			u = edge[i].u;
+			v = edge[i].v;
+			n = Cost[u] + V[u][v];
+			if(Cost[v]>n) {
+				Cost[v] = n;
+				P[v] = u;
+			}
+			n = Cost[v] + V[v][u];
+			if(Cost[u]>n) {
+				Cost[u] = n;
+				P[u] = v;
+			}
+		}
+	}
+}
+int Path[MAXN], tp;
+
+void Getpath(int n) {
+	if(n == 1) {
+		Path[tp ++] = n;
+		return;
+	}
+	Getpath(P[n]);
+	Path[tp++] = n;
+}
+
+void ReSet() {		// main function ... "DELETES" edges already used in a path
+	int i, u, v;
+	for(i = 0; i+1<tp; i++) {
+		u = Path[i];
+		v = Path[i+1];
+		V[u][v] = INF;
+		V[v][u] = - V[v][u];
+	}
+}
+
+void Cal() {
+	int c1;
+	tp = 0;
+	BellMan();    
+	c1 = Cost[N]; 
+	Getpath(N);
+	ReSet();
+	Ini();         
+	BellMan();	
+	c1 += Cost[N];
+	if(c1 >= INF) puts("Back to jail");
+	else printf("%d\n",c1);
+}
+void main() {
+	int c;
+	while(scanf("%d%d",&N,&E) == 2) {
+		if(!N) break;
+		Ini();
+		for(int i = 0; i<E; i++) {
+			scanf("%d%d%d",&edge[i].u,&edge[i].v,&c);
+			V[edge[i].u][edge[i].v] = c;
+			V[edge[i].v][edge[i].u] = c;
+		}
+		Cal();
+	}
+}
+
+/* ----- Max Bipartite Matching ---- */
+
+set up N to be the number of vertices in the left set, M to be the number
+of vertices in the right set, and r[i][j] to be 1 if there is an edge from the i-th left vertex to the j-th right
+vertex. Then, call bipMatch(), it will return the size of the max matching. And after the call the array
+element m[i] indicates the partner of the i-th left vertex (-1 means it is not matched to anyone).
+
+int r[110][110];
+int N,M;
+int v[110];
+int m[110], m1[110];
+
+int dfs(int a)
+{
+	if(a<0) return(1);
+	if(v[a]) return(0);
+	v[a]=1;
+	int i;
+	REP(i,M)
+		if(r[a][i]) //* see remark
+		{
+			if(dfs(m1[i]))
+			{
+				m[a]=i;m1[i]=a;
+				return(1);
+			}
+		}
+	return(0);
+}
+
+int dfsExp(int a) 
+{
+	int i;
+	REP(i,N)
+		v[i]=0;
+	return dfs(a);
+}
+
+int bipMatch()
+{
+	int i;
+	int ans=0;
+	REP(i,N)
+		m[i]=-1;
+	REP(i,M)
+		m1[i]=-1;
+	REP(i,N)
+		if(m[i]<0) 
+			ans+=dfsExp(i);
+	return(ans);
+}
+
+A set S of vertices is called a vertex cover for G if each edge of G contains at least one end point in S.
+Consider the vertices and edges are the map of a city, you want to pick several intersections to put police
+so that every road is guarded. The minimum vertex cover is the least number of polices you need to put in
+order to guard all the roads. It is easy to see the minimum vertex cover number is at least the maximum
+matching number
+
+In a bipartite graph G, the vertex cover number is the same as maximum matching number.
+
+-------------------------Max Flows-------------------------
+
+Problem 2.5 (Max Flow) Given a graph G, a source s and a destination t, and on each edge e, there
+is a capacity c(e) = 0, which is the maximum amount of substance we can transfer along that edge. (We
+work with directed graphs, so c(u, v) is not necessarily the same as c(v, u).) What is the maximum amount
+of substance we can transfer from s to f through the whole graph?
+Problem 2.6 (Min Cut) Given a graph G, a source s and a destination t, and on each edge e, there is a
+cost c(e) = 0. We want to delete some edges so that t is disconnected from s. (i.e., there is no directed path
+from s to t; but there might be path from t to s). What is the minimum cost of such a cut?
+In a weighted graph G with weights c(e), we view c as capacity in the max flow problem, and view c as
+the cost in the min cut problem. It is easy to see that any flow cannot transfer more than the cost of any
+cut. So max flow is at most the min cut. The magic theorem says that they are actually equal.
+Theorem 2.6 (max flow min cut) In any weighted graph, max flow = min cut.
+As a convention, we focus on the problem of finding the max flow (the amount as well as the actually
+flow). We will find the cut that achieves the min cut as a by-product of our max flow algorithms.
+Before we describe the algorithms, we show some applications of max flow. First, we have the following
+theorem that allows us to work on discrete units instead of continuous substance.
+Theorem 2.7 If G is a graph where all the capacities are integers, then among all the possible max flows,
+there is one where the amount of substance flowing on each edge is integer.
+19
+In fact all our algorithm will give such an integer flow if the input capacities are integers.
+Application. If we have a bipartite graph G = (A,B,E), think of A is the vertices we draw on the left,
+B on the right side. We add a leftmost point s and rightmost point t, and add edges between s and each
+point in A, and t to each point in B. (We may direct each edge from left to the right, or just allow both
+directions.) And we think each edge has capacity 1, then the max matching problem becomes a special case
+of the max flow problem.
+Application. If we have a graph G and two vertices s and t. We want to know at most how many edgedisjoint
+paths (meaning no edge can be used on two paths, but a vertex may be used several times) from s to
+t we can find. A nice theorem in graph theorem tells us that this is the same as the question of at least how
+many edges we need to cut off so that s and t are disconnected. This is nothing but the min cut problem
+where we think each edge has both direction with capacity 1. So we can solve this by a max flow.
+Application. How about the restrictions (the capacities) are on the vertices instead of edges? Aha, here
+is the beautiful construction: We draw the graph, and draw it again on a slightly higher level, say, second
+floor. Now, each node v has two copies, one on each floor. We call the one on the first floor vin (the entrance
+of v), and the one on the second floor vout (the exit). Now we redraw the edges, if there was an edge u ? v,
+we add an edge uout ? vin, with capacity big enough, say, bigger than the max capacity on any vertex in
+the original graph. At last, for each vertex v in the old graph, we add in the new graph an edge vin ? vout
+with capacity exactly the same as the capacity on v in the old graph. By doing this, we simulated the flow
+problem with vertex capacities with a usual one where the capacities are on edges. The answer we want is
+the max flow from sin to tout.
+Application. Given a graph G and two vertices s and t, we want to know at most how many vertex-disjoint
+paths from s to t we can find. This is just a special case of the previous application, where we think each
+vertex except s and t has capacity 1. See Problem 7.7 for an example.
+
+
+--------------Minimum (Max) Cost Bipartite Matching---------------
+
+In a bipartite graph there might be multiple answers to the max matching problem. If there is
+a cost for each edge, what is the min(max) cost matching?
+
+
+
+/* ----------------  Geometry   ----------------------*/
+
+const double PI = 2.0*acos(0.0);
+const double EPS = 1e-9; //too small/big?????
+struct PT
+{
+    double x,y;
+    double length() {return sqrt(x*x+y*y);}
+    int normalize()
+    // normalize the vector to unit length; return -1 if the vector is 0
+    {
+        double l = length();
+        if(fabs(l)<EPS) return -1;
+        x/=l; y/=l;
+        return 0;
+    }
+    PT operator-(PT a)
+    {
+        PT r;
+        r.x=x-a.x; r.y=y-a.y;
+        return r;
+    }
+    PT operator+(PT a)
+    {
+        PT r;
+        r.x=x+a.x; r.y=y+a.y;
+        return r;
+    }
+    PT operator*(double sc)
+    {
+        PT r;
+        r.x=x*sc; r.y=y*sc;
+	return r;
+    }
+	bool operator<(const PT& a,const PT& b)
+	{
+    	if(fabs(a.x-b.x)<EPS) return a.y<b.y;
+    	return a.x<b.x;
+	}
+};
+
+double dist(PT& a, PT& b)
+  // the distance between two points
+{
+    return sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
+}
+double dot(PT& a, PT& b)
+  // the inner product of two vectors
+{
+    return(a.x*b.x+a.y*b.y);
+}
+
+int sideSign(PT& p1,PT& p2,PT& p3)
+  // which side is p3 to the line p1->p2? returns: 1 left, 0 on, -1 right
+{
+    double sg = (p1.x-p3.x)*(p2.y-p3.y)-(p1.y - p3.y)*(p2.x-p3.x);
+    if(fabs(sg)<EPS) return 0;
+    if(sg>0)return 1;
+    return -1;
+}
+int isConvex(vector<PT>& v)
+// test whether a simple polygon is convex
+// return 0 if not convex, 1 if strictly convex,
+// 2 if convex but there are points unnecesary
+// this function does not work if the polycon is self intersecting
+// in that case, compute the convex hull of v, and see if both have the same area
+{
+    int i,j,k;
+    int c1=0; int c2=0; int c0=0;
+    int n=v.size();
+    for(i=0;i<n;i++)
+    {
+        j=(i+1)%n;
+        k=(j+1)%n;
+        int s=sideSign(v[i], v[j], v[k]);
+        if(s==0) c0++;
+        if(s>0) c1++;
+        if(s<0) c2++;
+    }
+    if(c1 && c2) return 0;
+    if(c0) return 2;
+    return 1;
+}
+double trap(PT a, PT b)
+{
+    return (0.5*(b.x - a.x)*(b.y + a.y));
+}
+double area(vector<PT> &vin)
+  // Area of a simple polygon, not neccessary convex
+{
+    int n = vin.size();
+    double ret = 0.0;
+    for(int i = 0; i < n; i++)
+            ret += trap(vin[i], vin[(i+1)%n]);
+        return fabs(ret);
+}
+double peri(vector<PT> &vin)
+  // Perimeter of a simple polygon, not neccessary convex
+{
+    int n = vin.size();
+    double ret = 0.0;
+    for(int i = 0; i < n; i++)
+            ret += dist(vin[i], vin[(i+1)%n]);
+    return ret;
+}
+double triarea(PT a, PT b, PT c)
+{
+    return fabs(trap(a,b)+trap(b,c)+trap(c,a));
+}
+double height(PT a, PT b, PT c)
+  // height from a to the line bc
+{
+    double s3 = dist(c, b);
+    double ar=triarea(a,b,c);
+    return(2.0*ar/s3);
+}
+int intersection( PT p1, PT p2, PT p3, PT p4, PT &r )
+  // two lines given by p1->p2, p3->p4 r is the intersection point
+  // return -1 if two lines are parallel
+{
+  double d = (p4.y - p3.y)*(p2.x-p1.x) - (p4.x - p3.x)*(p2.y - p1.y);
+  if( fabs( d ) < EPS ) return -1;
+      // might need to do something special!!!
+      double ua, ub;
+      ua = (p4.x - p3.x)*(p1.y-p3.y) - (p4.y-p3.y)*(p1.x-p3.x);
+      ua /= d;
+      // ub = (p2.x - p1.x)*(p1.y-p3.y) - (p2.y-p1.y)*(p1.x-p3.x);
+      //ub /= d;
+      r = p1 + (p2-p1)*ua;
+      return 0;
+}
+void closestpt( PT p1, PT p2, PT p3, PT &r )
+  // the closest point on the line p1->p2 to p3
+{
+    if( fabs( triarea( p1, p2, p3 ) ) < EPS )
+    { r = p3; return; }
+    PT v = p2-p1;
+    v.normalize();
+    double pr; // inner product
+    pr = (p3.y-p1.y)*v.y + (p3.x-p1.x)*v.x;
+    r = p1+v*pr;
+}
+int hcenter( PT p1, PT p2, PT p3, PT& r )
+{
+    // point generated by altitudes
+    if( triarea( p1, p2, p3 ) < EPS ) return -1;
+    PT a1, a2;
+    closestpt( p2, p3, p1, a1 );
+    closestpt( p1, p3, p2, a2 );
+    intersection( p1, a1, p2, a2, r );
+    return 0;
+}
+int center( PT p1, PT p2, PT p3, PT& r )
+{
+    // point generated by circumscribed circle
+    if( triarea( p1, p2, p3 ) < EPS ) return -1;
+    PT a1, a2, b1, b2;
+    a1 = (p2+p3)*0.5;
+    a2 = (p1+p3)*0.5;
+    b1.x = a1.x - (p3.y-p2.y);
+    b1.y = a1.y + (p3.x-p2.x);
+    b2.x = a2.x - (p3.y-p1.y);
+    b2.y = a2.y + (p3.x-p1.x);
+    intersection( a1, b1, a2, b2, r );
+    return 0;
+}
+int bcenter( PT p1, PT p2, PT p3, PT& r )
+{
+    // angle bisection
+    if( triarea( p1, p2, p3 ) < EPS ) return -1;
+    double s1, s2, s3;
+    s1 = dist( p2, p3 );
+    s2 = dist( p1, p3 );
+    s3 = dist( p1, p2 );
+    double rt = s2/(s2+s3);
+    PT a1,a2;
+    a1 = p2*rt+p3*(1.0-rt);
+    rt = s1/(s1+s3);
+    a2 = p1*rt+p3*(1.0-rt);
+    intersection( a1,p1, a2,p2, r );
+    return 0;
+}
+double angle(PT& p1, PT& p2, PT& p3)
+  // angle from p1->p2 to p1->p3, returns -PI to PI
+{
+    PT va = p2-p1;
+    va.normalize();
+    PT vb; vb.x=-va.y; vb.y=va.x;
+    PT v = p3-p1;
+    double x,y;
+    x=dot(v, va);
+    y=dot(v, vb);
+    return(atan2(y,x));
+}
+double angle(double a, double b, double c)
+  // in a triangle with sides a,b,c, the angle between b and c
+  // we do not check if a,b,c is a triangle here
+{
+    double cs=(b*b+c*c-a*a)/(2.0*b*c);
+    return(acos(cs));
+}
+void rotate(PT p0, PT p1, double a, PT& r)
+  // rotate p1 around p0 clockwise, by angle a
+  // don’t pass by reference for p1, so r and p1 can be the same
+{
+    p1 = p1-p0;
+    r.x = cos(a)*p1.x-sin(a)*p1.y;
+    r.y = sin(a)*p1.x+cos(a)*p1.y;
+    r = r+p0;
+}
+void reflect(PT& p1, PT& p2, PT p3, PT& r)
+  // p1->p2 line, reflect p3 to get r.
+{
+    if(dist(p1, p3)<EPS) {r=p3; return;}
+    double a=angle(p1, p2, p3);
+    r=p3;
+    rotate(p1, r, -2.0*a, r);
+}
+int pAndSeg(PT& p1, PT& p2, PT& p)
+  // the relation of the point p and the segment p1->p2.
+  // 1 if point is on the segment; 0 if not on the line; -1 if on the line but not on the segment
+{
+    double s=triarea(p, p1, p2);
+    if(s>EPS) return(0);
+    double sg=(p.x-p1.x)*(p.x-p2.x);
+    if(sg>EPS) return(-1);
+    sg=(p.y-p1.y)*(p.y-p2.y);
+    if(sg>EPS) return(-1);
+    return(1);
+}
+int lineAndCircle(PT& oo, double r, PT& p1, PT& p2, PT& r1, PT& r2)
+  // returns -1 if there is no intersection
+  // returns 1 if there is only one intersection
+{
+    PT m;
+    closestpt(p1,p2,oo,m);
+    PT v = p2-p1;
+    v.normalize();
+  double r0=dist(oo, m);
+  if(r0>r+EPS) return -1;
+  if(fabs(r0-r)<EPS)
+  {
+      r1=r2=m;
+      return 1;
+      }
+  double dd = sqrt(r*r-r0*r0);
+  r1 = m-v*dd; r2 = m+v*dd;
+  return 0;
+}
+int CAndC(PT o1, double r1, PT o2, double r2, PT& q1, PT& q2)
+  // intersection of two circles
+  // -1 if no intersection or infinite intersection
+  // 1 if only one point
+{
+    double r=dist(o1,o2);
+    if(r1<r2) { swap(o1,o2); swap(r1,r2); }
+    if(r<EPS) return(-1);
+    if(r>r1+r2+EPS) return(-1);
+    if(r<r1-r2-EPS) return(-1);
+    PT v = o2-o1; v.normalize();
+    q1 = o1+v*r1;
+    if(fabs(r-r1-r2)<EPS || fabs(r+r2-r1)<EPS)
+    { q2=q1; return(1); }
+    double a=angle(r2, r, r1);
+    q2=q1;
+    rotate(o1, q1, a, q1);
+    rotate(o1, q2, -a, q2);
+    return 0;
+}
+int pAndPoly(vector<PT> pv, PT p)
+  // the relation of the point and the simple polygon
+  // 1 if p is in pv; 0 outside; -1 on the polygon
+{
+    int i, j;
+    int n=pv.size();
+    pv.push_back(pv[0]);
+    for(i=0;i<n;i++)
+            if(pAndSeg(pv[i], pv[i+1], p)==1) return(-1);
+    for(i=0;i<n;i++)
+            pv[i] = pv[i]-p;
+        p.x=p.y=0.0;
+    double a, y;
+    while(1)
+        {
+            a=(double)rand()/10000.00;
+            j=0;
+            for(i=0;i<n;i++)
+        {
+            rotate(p, pv[i], a, pv[i]);
+            if(fabs(pv[i].x)<EPS) j=1;
+        }
+            if(j==0)
+        {
+            pv[n]=pv[0];
+            j=0;
+            for(i=0;i<n;i++) if(pv[i].x*pv[i+1].x < -EPS)
+                {
+                    y=pv[i+1].y-pv[i+1].x*(pv[i].y-pv[i+1].y)/(pv[i].x-pv[i+1].x);
+                  if(y>0) j++;
+              }
+          return(j%2);
+      }
+      }
+  return 1;
+}
+void cutPoly(vector<PT>& pol, PT& p1, PT& p2, vector<PT>& pol1, vector<PT>& pol2)
+// cut the convex polygon pol along line p1->p2;
+// pol1 are the resulting polygon on the left side, pol2 on the right.
+{
+    vector<PT> pp,pn;
+    pp.clear(); pn.clear();
+    int i, sg, n=pol.size();
+    PT q1,q2,r;
+    for(i=0;i<n;i++)
+    {
+        q1=pol[i]; q2=pol[(i+1)%n];
+        sg=sideSign(p1, p2, q1);
+        if(sg>=0) pp.push_back(q1);
+        if(sg<=0) pn.push_back(q1);
+        if(intersection(p1, p2, q1, q2,r)>=0)
+        {
+            if(pAndSeg(q1, q2, r)==1)
+            {
+                pp.push_back(r);
+                pn.push_back(r);
+            }
+        }
+    }
+    pol1.clear(); pol2.clear();
+    if(pp.size()>2) vex2(pp, pol1);
+    if(pn.size()>2) vex2(pn, pol2);
+    //show(pol1);
+    //show(pol2);
+}
+int PInterP(vector<PT>& p1, vector<PT>& p2, vector<PT>& p3)
+{
+    vector<PT> pts;
+    PT pp;
+    pts.clear();
+    int m=p1.size();
+    int n=p2.size();
+    int i, j;
+    for(i=0;i<m;i++)
+        if(pAndPoly(p2, p1[i])!=0) pts.push_back(p1[i]);
+    for(i=0;i<n;i++)
+        if(pAndPoly(p1, p2[i])!=0) pts.push_back(p2[i]);
+    if(m>1 && n>1)
+    for(i=0;i<m;i++)
+        for(j=0;j<n;j++)
+            if(intersection(p1[i], p1[(i+1)%m], p2[j], p2[(j+1)%n], pp)==0)
+            {
+                //cout<<i<<" "<<j<<" -> "<<pp.x<<" "<<pp.y<<endl;
+                if(pAndSeg(p1[i], p1[(i+1)%m], pp)!=1) continue;
+                if(pAndSeg(p2[j], p2[(j+1)%n], pp)!=1) continue;
+                pts.push_back(pp);
+            }
+    if(pts.size()<=1)
+    {
+        p3.resize(1);
+        p3[0].x=p3[0].y=0.0;
+        return(1);
+    }
+    //show(pts);
+    vex2(pts, p3); // or vex
+    return(0);
+}
+
+/* Convex hull*/
+int n;
+Point p[SIZE];
+
+int CCW(const Point& p0, const Point& p1, const Point& p2) {
+  Point q = (p2 - p0) / (p1 - p0);
+  if(q.imag() > EPS) return 1;
+  if(q.imag() < -EPS) return -1;
+  return 0;
+}
+
+struct PosComp {
+  bool operator ()(int i, int j) const {
+    Point a = p[i], b = p[j];
+    if(a.imag() != b.imag())
+      return a.imag() < b.imag();
+    return a.real() < b.real();
+  }
+};
+
+struct ArgComp {
+  const Point& base;
+  ArgComp(const Point& b) : base(b) {}
+  bool operator ()(int i, int j) const {
+    Point a = p[i] - base, b = p[j] - base;
+    if(fabs(arg(a) - arg(b)) > EPS)
+      return arg(a) < arg(b);
+    return norm(a) < norm(b);
+  }
+};
+
+vector<Point> Graham() {
+  vector<int> index(n);
+  for(int i = 0; i < n; ++i) index[i] = i;
+  sort(index.begin(), index.end(), PosComp());
+  sort(index.begin() + 1, index.end(), ArgComp(p[index[0]]));
+  vector<Point> st;
+  for(int i = 0; i < (int)index.size(); ++i) {
+    while(st.size() >= 2 &&
+	  CCW(st[st.size() - 2], st[st.size() - 1], p[index[i]]) <= 0)
+      st.pop_back();
+    st.push_back(p[index[i]]);
+  }
+  return st;
+}
+/*  ------------- Misc ---------------------- */
+
+/*Max 2D sum*/
+(a). Preprocess the sum of vertical segments, s[i][j][k] to be the sum of all the numbers on the k -th
+column, from the i-th row to the j -th row. Notice that this takes O()n3 time if you use something like
+    s[i][j][k]=s[i][j-1][k]+a[j][k].
+(b) Now, the task reduces to the 1D max sum. We may ﬁx any possible top edge and bottom edge i and j
+(O(n2 ) choices), try to ﬁnd what is the rectangle with i as the top row, j as the bottom row. This is just
+the 1D max sum problem with elements s[i][j][0..M-1].
+
+/*Max 1D sum*/
+Let m[i] be the maximum sum of any subarray that ends at the element a[i]. Then
+m[i] is simply max(a[i], m[i-1]+a[i]).
+
+/* Shortest Path with Numb er of Steps Given	 */
+int BG=1000000000;
+// to avoid overflow in addition, do not use 2^31-1
+    A[1][i][j] = r[i][j]; p[1][i][j]=j;
+    for(t=2; t<=n; t++)
+    for(i=0; i<n; i++) for(j=0; j<n; j++)
+    {
+        A[t][i][j]=BG; p[t][i][j]=-1;
+        for(k=0; k<n; k++) if(A[1][i][k]<BG && A[t-1][k][j]<BG)
+            if(A[1][i][k]+A[t-1][k][j] < A[t][i][j])
+            {
+                A[t][i][j] = A[1][i][k]+A[t-1][k][j];
+                p[t][i][j] = k;
+            }
+    }
+
+void output(int a, int b, int t){
+    while(t)    {
+      cout<<a<<" ";
+      a = p[t][a][b];
+      t--;
+  }
+  cout<<b<<endl;
+}
+
+/* kth number in series , divisible by first 13 primes*/
+long long m[10000];
+int sg[10000];
+// m[Set]: the product of that set of primes, where the first 13 primes are labeled 0.
+// sg[Set]: 1 or -1, the parity of the set; will be used in Inclusion-Exclusion
+int p[13]={2,3,5,7,11,13,17,19,23,29,31,37,41};
+void init()
+{
+    int s, i;
+    for(s=1;s<(1<<13);s++)
+    {
+        m[s]=1; sg[s]=-1;
+        for(i=0;i<13;i++) if(s&(1<<i))
+        {
+            sg[s]=-sg[s];
+            m[s]=m[s]*p[i];
+        }
+    }
+    //cout<<m[(1<<13)-1]<<endl;
+}
+// play(wk) tells the number of basic numbers in the range 1..wk
+// It looks like the inverse to the function we want to compute
+long long play(long long wk)
+{
+    long long pt, cnt=0;
+    int s;
+    for(s=1;s<(1<<13);s++)
+    {
+        pt=wk/m[s];
+        cnt=cnt+pt*sg[s];
+    }
+    return(cnt);
+}
+int main()
+{
+    init();
+long long k,lo,hi,mi,k0;
+while(cin>>k)
+{
+    // Do a binary search on play() we get the answer.
+    lo=1; hi=m[(1<<13)-1]+1;
+    // assertion: from 1 to lo there will be less than k
+    // from 1 to hi there will be no less than k
+    while(lo+1<hi)
+    {
+        mi=(lo+hi)/2;
+        k0=play(mi);
+        if(k0<k) lo=mi; else hi=mi;
+    }
+    cout<<hi<<endl;
+}
+
+/* Monotone TSP*/
+vector<PT> pt; int n; double m[2005][2005];
+double play(int a, int b) //a<=b
+{
+    double& r=m[a][b];
+    int i;
+    if(m[a][b]>-0.5) return m[a][b];
+    r=1e+10;
+    if(b>a+1)
+    {
+        r=play(a, b-1)+dist(pt[b], pt[b-1]);
+        return r;
+    }
+    for(i=0;i<=a;i++)
+    {
+        r<?=play(i,a)+dist(pt[b], pt[i]);
+    }
+    return r;
+}
+int main() {
+    int i,j;
+    while(cin>>n)
+    {
+        pt.resize(n);
+        for(i=0;i<n;i++) cin>>pt[i].x>>pt[i].y;
+        for(i=0;i<n;i++) for(j=0;j<n;j++) m[i][j]=-1.0;
+        m[0][0]=0.0;
+        for(i=0;i<n;i++)
+             for(j=i;j<n;j++)
+                 play(i,j);
+        printf("%.2f\n", m[n-1][n-1]);
+    }
+    return 0;
+}
+
+/* TSP on SMALL GRAPH*/
+int N,M;
+char bd[50][50];
+int x[20],y[20],r[20][20];
+int n;
+int m[1<<17][17];
+int abs(int a)
+{
+    if(a<0) return -a;
+    return a;
+}
+int play(int S, int s)
+{
+    if(S==(1<<s)) return r[s][0];
+    int& v=m[S][s];
+    if(v>=0) return v;
+    v=100000000;
+    for(int i=0;i<n;i++) if(i!=s) if(S&(1<<i))
+        v=min(v,r[s][i]+play(S-(1<<s), i));
+    return v;
+}
+int main()
+{
+    int i,j;
+    while(cin>>N>>M)
+	  {
+      for(i=0;i<N;i++) cin>>bd[i];
+      n=1;
+      for(i=0;i<N;i++) for(j=0;j<M;j++)
+      {
+          if(bd[i][j]==’L’) {x[0]=i; y[0]=j;}
+          if(bd[i][j]==’#’) {x[n]=i; y[n]=j; n++;}
+      }
+      for(i=0;i<n;i++) for(j=0;j<n;j++)
+          r[i][j]=max(abs(x[i]-x[j]), abs(y[i]-y[j]));
+      memset(m, -1, sizeof(m));
+      cout<<play((1<<n)-1, 0)<<endl;
+  }
+  return 0;
+}
+
+/* Crime Wave*/
+int N,M; // number of verts and edges
+struct edge { int x,y, f,c, rev; };
+edge eg[500000];
+int aj[5010][200]; int pc[5010];
+int phi[5010]; int ex[5010];
+int mac[6000]; int ac[5010];
+int dead, born;
+void push(int a)
+{
+        int x=eg[a].x; int y=eg[a].y; int gg=ex[x];
+        if(gg>eg[a].c) gg=eg[a].c;
+        eg[a].f+=gg; eg[a].c-=gg;
+        int k=eg[a].rev;
+        eg[k].f-=gg; eg[k].c+=gg;
+        ex[x]-=gg; ex[y]+=gg;
+        if(ex[x]==0) {dead=(dead+1)%6000; ac[x]=0;}
+        if(y && y<N-1 && ac[y]==0) {mac[born]=y; ac[y]=1; born=(born+1)%6000;}
+}
+int maxflow()
+{
+        int i,j,k,t1,t2,t3;
+        //for(i=0;i<M;i++) eg[i].f=0;
+        for(i=1;i<N;i++) { ex[i]=0;     ac[i]=0; }
+        ex[0]=1000000000;
+        dead=born=0;
+        for(i=0, j=pc[0];i<j;i++)
+                push(aj[0][i]);
+        phi[0]=N;
+        for(i=1;i<N;i++) phi[i]=0;
+        while(dead!=born)
+        {
+	        i=mac[dead];
+	        t2=100000000;
+    	    for(t1=pc[i], j=0; j<t1; j++)
+        	{
+	    	    k=aj[i][j];
+    	    	if(eg[k].c==0) continue;
+                t3=phi[eg[k].y]+1;
+                if(t3<t2) t2=t3;
+                if(phi[i]==phi[eg[k].y]+1)
+                {
+                        push(k);
+                        j=t1+10;
+                }
+        	}	
+        	if(j<t1+5) phi[i]=t2;
+		}
+		int ans=0;
+		for(i=0, j=pc[0];i<j;i++)
+		  {
+          k=aj[0][i];
+          ans+=eg[k].f;
+ 		 }
+  //cout<<ans<<endl;
+  return(ans);
+}
+void init(int a)
+{
+        int i;
+        N=a;
+        for(i=0;i<N;i++) pc[i]=0;
+        M=0;
+}
+void addEdge(int x, int y, int c)
+{
+        eg[M].x=x; eg[M].y=y; eg[M].c=c; eg[M].f=0;
+        eg[M].rev=M+1; eg[M+1].rev=M;
+        eg[M+1].x=y; eg[M+1].y=x; eg[M+1].c=0;
+        eg[M+1].f=0;
+        aj[x][pc[x]]=M; pc[x]++;
+        aj[y][pc[y]]=M+1; pc[y]++;
+        M+=2;
+}
+int n,m;
+int B;
+int oPt(int a, int b){ return(2*(a*m+b)+1); }
+int iPt(int a, int b){ return(2*(a*m+b)+2); }
+int main()
+{
+        int i,j,k;
+        int q; cin>>q;
+        while(q)
+        {
+		q--;
+		cin>>n>>m;
+		init(2*m*n+2);	
+		for(i=0;i<n;i++)
+	       		for(j=0;j<m;j++)
+        		{
+        			k=oPt(i,j);
+                		addEdge(iPt(i,j),k,1);
+                		if(i==0) addEdge(k,N-1,1);
+                		else addEdge(k,iPt(i-1,j),1);
+	        		if(i==n-1) addEdge(k,N-1,1);
+        	        		else addEdge(k,iPt(i+1,j),1);
+		                        if(j==0) addEdge(k,N-1,1);
+                	        	else addEdge(k,iPt(i,j-1),1);
+	                        	if(j==m-1) addEdge(k,N-1,1);
+		                        else addEdge(k,iPt(i,j+1),1);
+                 	 	}
+			cin>>B;
+			for(k=0;k<B;k++)
+			{
+					cin>>i>>j;
+					i--;j--;
+					if(B<=200) addEdge(0,iPt(i,j),1);
+			}
+			if(B>200) cout<<"not possible";
+			else if(maxflow()==B) cout<<"possible";
+			else cout<<"not possible";
+			cout<<endl;
+	}
+	return(0);
+}
